@@ -52,5 +52,8 @@
   "bugs": {
     "url": "https://github.com/fczuardi/photobot/issues"
   },
-  "homepage": "https://github.com/fczuardi/photobot#readme"
+  "homepage": "https://github.com/fczuardi/photobot#readme",
+  "dependencies": {
+    "telegraf": "^3.2.2"
+  }
 }
