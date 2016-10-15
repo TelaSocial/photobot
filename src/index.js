@@ -1,41 +1,53 @@
 import Telegraf from 'telegraf';
+const botName = process.env.BOT_NAME;
+import setUp from '../setUp';
+const app = new Telegraf(process.env.BOT_TOKEN, { username: botName });
 
 const app = new Telegraf(
     process.env.BOT_TOKEN,
     { username: process.env.BOT_USERNAME }
 );
+console.log('token', process.env.BOT_TOKEN);
+const tag = setUp.tag;
+console.log('token', process.env.BOT_TOKEN);
+const tag = setUp.tag;
 
-const tag = '#zuzu';
-const zuardiId = '19555963';
+const activeUsers = new Set();
 
-// Here goes all msg to user for license approval
-app.on('text', ctx => {
-    console.log('got update', ctx.update);
-    ctx.reply('ok!');
-    ctx.telegram.sendMessage(zuardiId, 'License');
+app.command('start', ctx => { // eslint-disable-line
+    return ctx.reply(setUp.askForConfirmation, { reply_markup: {
+        resize_keyboard: true,
+        one_time_keyboard: true,
+        keyboard: [
+            [{ text: setUp.agreeText }, { text: setUp.declineText }]]
+    }
+    });
 });
 
-// console.log('telegram', JSON.stringify(app.telegram, ' ', 2));
-
-app.on('new_chat_member', ctx => {
-    // const userName = ctx.update.
-    console.log('ctx', JSON.stringify(ctx.update.message.new_chat_member, ' ', 2));
-    const newUser = ctx.update.message.new_chat_member;
-    if (newUser) {
-        console.log('newUser ', newUser);
-        ctx.telegram.sendMessage(newUser.id, `Hello ${newUser.first_name}!! Have a nice day`);
+app.on('text', ctx => {
+    if (ctx.message.text === setUp.agreeText) {
+        console.log('user id', ctx.message.from.id);
+        activeUsers.add(ctx.message.from.id);
+        ctx.reply(setUp.notifyAgreed);
+    } else {
+        ctx.reply(setUp.notifyDeclined);
     }
 });
 
 app.on('photo', ctx => {
-    ctx.reply('got image mate');
-
     const userImgTag = ctx.update.message.caption;
-    if (userImgTag === tag) {
-        ctx.reply('This image is allowed');
+    const user = ctx.update.message.from.id;
+    console.log('user ', user);
+
+    if (activeUsers.has(user.id)) {
+        ctx.reply(`Hello ${user.first_name}!! please talk to @${botName}`);
+    }
+    console.log('activeUsers ', activeUsers);
+    if (userImgTag === tag && activeUsers.has(user)) {
+        console.log('This image is allowed');
     } else {
         console.log('This image is not allowed');
     }
 });
 
-app.startPolling();
+app.startPolling(0);
