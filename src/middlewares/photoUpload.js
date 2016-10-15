@@ -1,7 +1,4 @@
-const fooMiddleware = (ctx, next) => next().then(() => {
-    // console.log('\n\n\n===\n');
-    // console.log(JSON.stringify(ctx, ' ', 2));
-    // console.log('\n===\n');
+const photoUpload = (ctx, next) => next().then(() => {
     const { telegram } = ctx;
     const { message } = ctx.update;
     const { document, photo } = message;
@@ -9,7 +6,6 @@ const fooMiddleware = (ctx, next) => next().then(() => {
     const photoId = Array.isArray(photo)
         ? photo[photo.length - 1].file_id
         : null;
-    // console.log('docId, photoId', docId, photoId);
     const fileId = docId || photoId;
     if (fileId) {
         telegram.getFileLink(fileId).then(fileLink => {
@@ -31,4 +27,4 @@ const fooMiddleware = (ctx, next) => next().then(() => {
     // }
 });
 
-export default fooMiddleware;
+export default photoUpload;
