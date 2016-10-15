@@ -4,5 +4,6 @@ export default {
     agreeText: 'Sim, eu aceito',
     declineText: 'Não, sou idiota',
     notifyAgreed: 'Seja feliz',
-    notifyDeclined: 'Ai que burro....'
+    notifyDeclined: 'Ai que burro....',
+    greeting: (userName, botName) => `Welcome ${userName}. Please talk to @${botName}`
 };
