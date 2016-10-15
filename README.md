@@ -10,3 +10,14 @@ cd photobot
 yarn install
 ```
 
+## Config
+```shell
+cp .env-sample .env
+$EDITOR .env
+```
+
+## Run
+
+```shell
+yarn start
+```
