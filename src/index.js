@@ -2,6 +2,8 @@ import Telegraf from 'telegraf';
 const botName = process.env.BOT_NAME;
 import setUp from '../setUp';
 const app = new Telegraf(process.env.BOT_TOKEN, { username: botName });
+import debugMiddleware from './middlewares/debug';
+import photoUploadMiddleware from './middlewares/photoUpload';
 
 const app = new Telegraf(
     process.env.BOT_TOKEN,
@@ -12,6 +14,8 @@ const tag = setUp.tag;
 console.log('token', process.env.BOT_TOKEN);
 const tag = setUp.tag;
 
+app.use(debugMiddleware);
+app.use(photoUploadMiddleware);
 const activeUsers = new Set();
 
 app.command('start', ctx => { // eslint-disable-line
@@ -38,6 +42,7 @@ app.on('photo', ctx => {
     const userImgTag = ctx.update.message.caption;
     const user = ctx.update.message.from.id;
     console.log('user ', user);
+app.startPolling();
 
     if (activeUsers.has(user.id)) {
         ctx.reply(`Hello ${user.first_name}!! please talk to @${botName}`);
