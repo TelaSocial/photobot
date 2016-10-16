@@ -12,15 +12,19 @@ const getPublishers = () => {
     global.activeUsers = new Set();
 
     return new Promise(resolve => {
-        ds.runQuery(query, (err, users) => {
-            users.forEach(u => global.activeUsers.add(u.data.userId));
-            return resolve();
-        });
+        ds.runQuery(query, (err, users) => resolve(users));
     });
 };
 
 // recebe a lista dos file names cujo userId esta na lista dos publishers
-const getPublicPhotos = () => {};
+const getPublicPhotos = () => {
+    const query = ds.createQuery('PhotoMetadata')
+        .filter('acceptedTerms', '=', true);
+
+    return new Promise(resolve => {
+        ds.runQuery(query, (err, photos) => resolve(photos));
+    });
+};
 
 export {
     getPublishers,

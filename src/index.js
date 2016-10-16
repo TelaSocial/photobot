@@ -18,4 +18,9 @@ app.use(photoUpload);
 app.use(tos);
 app.use(photoMetadataLogger);
 
-getPublishers().then(() => app.startPolling(0));
+getPublishers().then(users => {
+    users.forEach(u => global.activeUsers.add(u.data.userId));
+    console.log('users: ', users);
+    app.startPolling(0);
+});
+
