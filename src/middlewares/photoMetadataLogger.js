@@ -1,7 +1,7 @@
-import datastore from '@google-cloud/datastore';
+import gcloud from 'google-cloud';
 import path from 'path';
 
-const ds = datastore({
+const ds = gcloud.datastore({
     projectId: process.env.GCLOUD_PROJECT,
     keyFilename: path.join(__dirname, '../../keyfile.json')
 });

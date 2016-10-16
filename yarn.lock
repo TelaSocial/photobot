@@ -71,7 +71,7 @@
     modelo "^4.2.0"
     string-format-obj "^1.0.0"
 
-"@google-cloud/datastore", "@google-cloud/datastore@^0.4.0":
+"@google-cloud/datastore@^0.4.0":
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/@google-cloud/datastore/-/datastore-0.4.0.tgz#d0117a70b56c91c5564d405f8cb13760f90ef63b"
   dependencies:
@@ -180,7 +180,7 @@
     string-format-obj "^1.1.0"
     through2 "^2.0.1"
 
-"@google-cloud/storage", "@google-cloud/storage@^0.2.0":
+"@google-cloud/storage@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@google-cloud/storage/-/storage-0.2.0.tgz#64b083c3b2cc7413cb63d47eb38f133878bf8760"
   dependencies:
@@ -2502,7 +2502,7 @@ node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
 
-node-pre-gyp@*, node-pre-gyp@^0.6.29:
+node-pre-gyp@^0.6.29:
   version "0.6.30"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.30.tgz#64d3073a6f573003717ccfe30c89023297babba1"
   dependencies:

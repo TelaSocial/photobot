@@ -2,6 +2,5 @@ node_modules
 .env
 npm-*
 keyfile.json
-
-file_50.jpg
-file_52.png
+*.jpg
+*.png
