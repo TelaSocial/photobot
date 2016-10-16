@@ -3,6 +3,8 @@ import setup from '../../setup';
 // TODO: change this to remote database
 const activeUsers = new Set();
 const tos = (ctx, next) => {
+    const fileId = ctx.state.fileId;
+
     const { text, from } = ctx.update.message;
 
     const isStart = text && text === '/start';
@@ -23,6 +25,10 @@ const tos = (ctx, next) => {
         } else {
             ctx.reply(setup.notifyDeclined);
         }
+    } else if (fileId && !hasAccepted) {
+        ctx.reply(setup.greeting(
+                    from.first_name,
+                    process.env.BOT_NAME));
     }
     return next();
 };

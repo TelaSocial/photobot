@@ -5,5 +5,5 @@ export default {
     declineText: 'No, I don\'t',
     notifyAgreed: 'Nice, you are good to go',
     notifyDeclined: 'Maybe next time',
-    greeting: (userName, botName) => `Welcome ${userName}. Please talk to @${botName}`
+    greeting: (userName, botName) => `Welcome ${userName}. Please talk to @${botName} to have your photos posted on the screen` //eslint-disable-line
 };
