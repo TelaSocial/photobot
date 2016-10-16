@@ -7,15 +7,13 @@ const ds = gcloud.datastore({
     keyFilename: path.join(__dirname, '../../keyfile.json')
 });
 
-const activeUsers = new Set();
-
 const tos = (ctx, next) => {
     const fileId = ctx.state.fileId;
     const { text, from } = ctx.update.message;
 
     const isStart = text && text === '/start';
     const isTosReply = text && (text === setup.agreeText || text === setup.declineText);
-    const hasAccepted = id => activeUsers.has(id);
+    const hasAccepted = id => global.activeUsers.has(id);
 
     if (isStart && !hasAccepted(from.id)) {
         ctx.reply(setup.askForConfirmation, { reply_markup: {
@@ -26,9 +24,9 @@ const tos = (ctx, next) => {
         } });
     } else if (isTosReply && !hasAccepted(from.id)) {
         if (text === setup.agreeText) {
-            activeUsers.add(from.id);
+            global.activeUsers.add(from.id);
         } else if (text === setup.declineText) {
-            activeUsers.delete(from.id);
+            global.activeUsers.delete(from.id);
         } else {
             return next();
         }
