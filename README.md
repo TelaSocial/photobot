@@ -22,6 +22,7 @@ yarn install
 ```shell
 cp .env-sample .env
 $EDITOR .env
+source .env
 ```
 
 ## Run
