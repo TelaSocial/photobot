@@ -3,4 +3,5 @@ node_modules
 npm-*
 keyfile.json
 *.jpg
+*.jpeg
 *.png

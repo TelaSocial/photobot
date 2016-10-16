@@ -7,16 +7,40 @@ const ds = gcloud.datastore({
 });
 
 const photoMetadataLogger = (ctx, next) => {
-    console.log('-- photoMetadataLogger --', path.join(__dirname, '../../keyfile.json'));
     const kind = 'PhotoMetadata';
-    const key = ds.key(kind);
     const fileId = ctx.state.fileId;
+    const key = ds.key([kind, fileId]);
+    const {
+        first_name,
+        last_name,
+        username,
+        id
+    } = ctx.update.message.from;
+    const displayName = [first_name, last_name] //eslint-disable-line
+        .filter(name => name !== undefined)
+        .join(' ') || username;
     const data = [
         {
-            name: 'fileId',
-            value: fileId,
+            name: 'timestamp',
+            value: ctx.update.message.date,
+            excludeFromIndexes: false
+        },
+        {
+            name: 'userId',
+            value: id,
+            excludeFromIndexes: false
+        },
+        {
+            name: 'displayName',
+            value: displayName,
+            excludeFromIndexes: true
+        },
+        {
+            name: 'tgUpdate',
+            value: JSON.stringify(ctx.update),
             excludeFromIndexes: true
         }
+
     ];
     const entity = { key, data };
     return ds.save(
