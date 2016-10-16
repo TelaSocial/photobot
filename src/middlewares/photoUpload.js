@@ -21,11 +21,11 @@ const photoUpload = (ctx, next) => {
             download(fileLink, '.').then(() => {
                 const bucket = gcs.bucket(process.env.STORAGE_BUCKET);
                 console.log('File name', fileLink.slice(fileLink.lastIndexOf('/') + 1));
-                bucket.upload(fileLink.slice(fileLink.lastIndexOf('/') + 1), (e, f) => {
-                    if (e) {
-                        console.log('ERROR::::::', e);
+                bucket.upload(fileLink.slice(fileLink.lastIndexOf('/') + 1), (erro, file) => {
+                    if (erro) {
+                        console.log('ERROR::::::', erro);
                     } else {
-                        console.log('file ', f);
+                        console.log('file ', file);
                     }
                 });
             });
