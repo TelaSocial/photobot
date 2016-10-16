@@ -64,6 +64,14 @@ const tos = (ctx, next) => {
             return next();
         });
     } else if (fileId && !hasAccepted(from.id)) {
+        const isPrivate = ctx.update.message.chat.type === 'private';
+        if (isPrivate) {
+            return ctx.reply(setup.greeting(from.first_name, process.env.BOT_USERNAME),
+                    { reply_markup: { resize_keyboard: true, one_time_keyboard: true,
+                            keyboard: [
+                            [{ text: setup.agreeText }, { text: setup.declineText }]]
+            } });
+        }
         ctx.reply(setup.greeting(
                     from.first_name,
                     process.env.BOT_USERNAME));
