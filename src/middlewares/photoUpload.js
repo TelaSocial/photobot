@@ -1,6 +1,7 @@
 import cloud from 'google-cloud';
 import path from 'path';
 import download from 'download';
+import fs from 'fs';
 
 const gcloud = cloud({
     projectId: process.env.GCLOUD_PROJECT, //eslint-disable-line
@@ -26,6 +27,12 @@ const photoUpload = (ctx, next) => {
                     if (err) {
                         console.log('ERROR::::::', err);
                     }
+                    const photoPath = path.join(__dirname, `../../${fileName}`);
+                    fs.unlink((photoPath, fileName), e => {
+                        if (e) {
+                            console.log('Error when deleting file', e);
+                        }
+                    });
                 });
             });
             return next();
