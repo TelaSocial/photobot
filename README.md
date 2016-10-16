@@ -4,6 +4,7 @@ on a different server.
 
 ## Requirements
 
+- node > v6
 - yarn
   - https://yarnpkg.com/en/docs/install
 - a Google Cloud app credentials json file
@@ -22,6 +23,7 @@ yarn install
 ```shell
 cp .env-sample .env
 $EDITOR .env
+source .env
 ```
 
 ## Run
