@@ -1,15 +1,10 @@
-const photoUpload = (ctx, next) => next().then(() => {
+const photoUpload = (ctx, next) => {
+    console.log('-- photoUpload --');
     const { telegram } = ctx;
-    const { message } = ctx.update;
-    const { document, photo } = message;
-    const docId = document ? document.file_id : null;
-    const photoId = Array.isArray(photo)
-        ? photo[photo.length - 1].file_id
-        : null;
-    const fileId = docId || photoId;
+    const fileId = ctx.state.fileId;
     if (fileId) {
         telegram.getFileLink(fileId).then(fileLink => {
-            ctx.telegram.sendMessage(
+            telegram.sendMessage(
                 ctx.update.message.chat.id,
                 `fileURL: ${fileLink}`
             );
@@ -25,6 +20,7 @@ const photoUpload = (ctx, next) => next().then(() => {
     //         }
     //     });
     // }
-});
+    return next();
+};
 
 export default photoUpload;

@@ -3,7 +3,7 @@ import setup from '../../setup';
 // TODO: change this to remote database
 const activeUsers = new Set();
 
-const tos = (ctx, next) => next().then(() => {
+const tos = (ctx, next) => {
     const { text, from } = ctx.update.message;
 
     const isStart = text && text === '/start';
@@ -16,8 +16,7 @@ const tos = (ctx, next) => next().then(() => {
             one_time_keyboard: true,
             keyboard: [
                 [{ text: setup.agreeText }, { text: setup.declineText }]]
-        }
-    });
+        } });
     } else if (isTosReply && !hasAccepted) {
         if (text === setup.agreeText) {
             activeUsers.add(from.id);
@@ -26,5 +25,6 @@ const tos = (ctx, next) => next().then(() => {
             ctx.reply(setup.notifyDeclined);
         }
     }
-});
+    return next();
+};
 export default tos;
