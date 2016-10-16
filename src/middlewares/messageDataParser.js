@@ -12,7 +12,6 @@
 // - timestamp: the date of the update
 
 const messageDataParser = (ctx, next) => {
-    console.log('-- messageDataParser --');
     const { message } = ctx.update;
     if (!message) {
         return false;

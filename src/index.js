@@ -24,8 +24,8 @@ const app = new Telegraf(
 // Middlewares
 app.use(debug);
 app.use(messageDataParser);
-app.use(photoUpload);
 app.use(tos);
+app.use(photoUpload);
 app.use(photoMetadataLogger);
 
 ds.runQuery(query, (err, users) => {
