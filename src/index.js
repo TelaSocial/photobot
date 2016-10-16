@@ -19,8 +19,10 @@ app.use(photoUpload);
 app.use(photoMetadataLogger);
 
 getPublishers().then(users => {
-    users.forEach(u => global.activeUsers.add(u.data.userId));
-    console.log('users: ', users);
+    if (Array.isArray(users)) {
+        users.forEach(u => global.activeUsers.add(u.data.userId));
+        console.log('users: ', users);
+    }
     app.startPolling(0);
-});
+}).catch(e => console.error(e));
 
