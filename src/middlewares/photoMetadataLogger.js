@@ -32,6 +32,11 @@ const photoMetadataLogger = (ctx, next) => {
             excludeFromIndexes: false
         },
         {
+            name: 'acceptedTerms',
+            value: global.activeUsers.has(ctx.state.userId),
+            excludeFromIndexes: false
+        },
+        {
             name: 'tgUpdate',
             value: JSON.stringify(ctx.update),
             excludeFromIndexes: true
