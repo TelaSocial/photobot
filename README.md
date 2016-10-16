@@ -6,6 +6,9 @@ on a different server.
 
 - yarn
   - https://yarnpkg.com/en/docs/install
+- a Google Cloud app credentials json file
+  - https://console.cloud.google.com/home/dashboard
+  - **Create project** ![screen shot 2016-10-16 at 17 54 31](https://cloud.githubusercontent.com/assets/7760/19420426/cc86caec-93c9-11e6-88ab-f55f7be794c9.png)
 
 ## Install
 
