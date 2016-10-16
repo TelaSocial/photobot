@@ -10,15 +10,10 @@ const gcloud = cloud({
 const gcs = gcloud.storage();
 
 const photoUpload = (ctx, next) => {
-    console.log('-- photoUpload --');
     const { telegram } = ctx;
     const fileId = ctx.state.fileId;
     if (fileId) {
         return telegram.getFileLink(fileId).then(fileLink => {
-            telegram.sendMessage(
-                ctx.update.message.chat.id,
-                `fileURL: ${fileLink}`
-            );
             download(fileLink, '.').then(() => {
                 const bucket = gcs.bucket(process.env.STORAGE_BUCKET);
                 bucket.upload(fileLink.slice(fileLink.lastIndexOf('/') + 1), (erro, file) => {
