@@ -17,11 +17,14 @@ const photoUpload = (ctx, next) => {
         return telegram.getFileLink(fileId).then(fileLink => {
             telegram.sendMessage(
                 ctx.update.message.chat.id,
-                `fileURL: ${fileLink}`);
+                `fileURL: ${fileLink}`
+            );
             download(fileLink, '.').then(() => {
                 const bucket = gcs.bucket(process.env.STORAGE_BUCKET);
-                console.log('File name', fileLink.slice(fileLink.lastIndexOf('/') + 1));
-                bucket.upload(fileLink.slice(fileLink.lastIndexOf('/') + 1), (e, f) => {
+                const fileName = fileLink.slice(
+                    fileLink.lastIndexOf('/') + 1
+                );
+                bucket.upload(fileName, (e, f) => {
                     if (e) {
                         console.log('ERROR::::::', e);
                     } else {
@@ -32,16 +35,6 @@ const photoUpload = (ctx, next) => {
             return next();
         });
     }
-    // if (ctx.update.message.text === 'foo') {
-    //     ctx.telegram.sendMessage(ctx.update.message.chat.id, 'oi', {
-    //         reply_markup: {
-    //             keyboard: [
-    //                 [{ text: 'yes' }, { text: 'no' }]
-    //             ],
-    //             one_time_keyboard: true
-    //         }
-    //     });
-    // }
     return next();
 };
 
