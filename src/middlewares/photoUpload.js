@@ -14,10 +14,6 @@ const photoUpload = (ctx, next) => {
     const fileId = ctx.state.fileId;
     if (fileId) {
         return telegram.getFileLink(fileId).then(fileLink => {
-            telegram.sendMessage(
-                ctx.update.message.chat.id,
-                `fileURL: ${fileLink}`
-            );
             download(fileLink, '.').then(() => {
                 const bucket = gcs.bucket(process.env.STORAGE_BUCKET);
                 const fileName = fileLink.slice(fileLink.lastIndexOf('/') + 1);
