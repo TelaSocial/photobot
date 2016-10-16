@@ -2,6 +2,11 @@
 A Telegram bot that receives photo attachments from users and store them
 on a different server.
 
+## Requirements
+
+- yarn
+  - https://yarnpkg.com/en/docs/install
+
 ## Install
 
 ```shell
