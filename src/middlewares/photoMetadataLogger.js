@@ -10,21 +10,35 @@ const photoMetadataLogger = (ctx, next) => {
     const kind = 'PhotoMetadata';
     const fileId = ctx.state.fileId;
     const key = ds.key([kind, fileId]);
+    const {
+        first_name,
+        last_name,
+        username,
+        id
+    } = ctx.update.message.from;
+    const displayName = [first_name, last_name] //eslint-disable-line
+        .filter(name => name !== undefined)
+        .join(' ') || username;
     const data = [
         {
             name: 'timestamp',
-            value: ctx.state.timestamp,
+            value: ctx.update.message.date,
             excludeFromIndexes: false
         },
         {
             name: 'userId',
-            value: ctx.state.userId,
+            value: id,
             excludeFromIndexes: false
         },
         {
             name: 'displayName',
-            value: ctx.state.displayName,
+            value: displayName,
             excludeFromIndexes: true
+        },
+        {
+            name: 'caption',
+            value: ctx.update.message.caption || '',
+            excludeFromIndexes: false
         },
         {
             name: 'tgUpdate',
@@ -34,7 +48,6 @@ const photoMetadataLogger = (ctx, next) => {
 
     ];
     const entity = { key, data };
-    console.log('entity', entity);
     return ds.save(
         entity,
         err => {
