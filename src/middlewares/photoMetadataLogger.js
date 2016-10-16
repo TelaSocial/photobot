@@ -27,6 +27,11 @@ const photoMetadataLogger = (ctx, next) => {
             excludeFromIndexes: true
         },
         {
+            name: 'caption',
+            value: ctx.update.message.caption || '',
+            excludeFromIndexes: false
+        },
+        {
             name: 'tgUpdate',
             value: JSON.stringify(ctx.update),
             excludeFromIndexes: true
@@ -34,7 +39,6 @@ const photoMetadataLogger = (ctx, next) => {
 
     ];
     const entity = { key, data };
-    console.log('entity', entity);
     return ds.save(
         entity,
         err => {
