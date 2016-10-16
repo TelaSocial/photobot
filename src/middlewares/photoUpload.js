@@ -3,11 +3,12 @@ const photoUpload = (ctx, next) => {
     const { telegram } = ctx;
     const fileId = ctx.state.fileId;
     if (fileId) {
-        telegram.getFileLink(fileId).then(fileLink => {
+        return telegram.getFileLink(fileId).then(fileLink => {
             telegram.sendMessage(
                 ctx.update.message.chat.id,
                 `fileURL: ${fileLink}`
             );
+            return next();
         });
     }
     // if (ctx.update.message.text === 'foo') {
