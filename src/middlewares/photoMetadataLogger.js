@@ -1,11 +1,13 @@
 import datastore from '@google-cloud/datastore';
+import path from 'path';
 
 const ds = datastore({
-    projectId: process.env.GCLOUD_PROJECT
+    projectId: process.env.GCLOUD_PROJECT,
+    keyFilename: path.join(__dirname, '../../keyfile.json')
 });
 
 const photoMetadataLogger = (ctx, next) => {
-    console.log('-- photoMetadataLogger --');
+    console.log('-- photoMetadataLogger --', path.join(__dirname, '../../keyfile.json'));
     const kind = 'PhotoMetadata';
     const key = ds.key(kind);
     const fileId = ctx.state.fileId;
@@ -20,7 +22,9 @@ const photoMetadataLogger = (ctx, next) => {
     return ds.save(
         entity,
         err => {
-            console.error('ERROR::::', err);
+            if (err) {
+                console.error('ERROR::::', err);
+            }
             return next();
         }
     );
