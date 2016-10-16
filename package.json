@@ -54,7 +54,8 @@
   },
   "homepage": "https://github.com/fczuardi/photobot#readme",
   "dependencies": {
-    "@google-cloud/datastore": "^0.4.0",
+    "download": "^5.0.2",
+    "google-cloud": "^0.41.2",
     "telegraf": "^3.2.2"
   }
 }

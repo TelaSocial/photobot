@@ -28,7 +28,7 @@ const tos = (ctx, next) => {
     } else if (fileId && !hasAccepted) {
         ctx.reply(setup.greeting(
                     from.first_name,
-                    process.env.BOT_NAME));
+                    process.env.BOT_USERNAME));
     }
     return next();
 };
