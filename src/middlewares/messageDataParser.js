@@ -14,6 +14,9 @@
 const messageDataParser = (ctx, next) => {
     console.log('-- messageDataParser --');
     const { message } = ctx.update;
+    if (!message) {
+        return false;
+    }
     const { document, photo, date } = message;
     const docId = document ? document.file_id : null;
     const photoId = Array.isArray(photo)
