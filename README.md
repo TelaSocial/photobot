@@ -60,3 +60,35 @@ tail -f THE_FILENAME_YOU_WANT
 ```shell
 yarn stop
 ```
+
+## Usage
+
+### API
+
+#### GET /photos
+
+Gets the feed with all public photos in the configured gcloud app + bucket,
+regardless of their captions.
+
+```
+curl --request GET \
+  --url http://localhost:7314/photos
+```
+
+#### POST /blacklist
+
+Blacklists an individual photo and remove it from the public feeds.
+
+** body parameter: photoID**
+
+**example **
+
+```
+curl --request POST \
+  --url http://localhost:7314/blacklist \
+  --header 'content-type: application/json' \
+  --data '{
+	"photoId": "AgADAQADn6gxG3tmKgHscgQ3VBrHqcWs5y8ABKjihbunkqIUGcQBAAEC" 
+}'
+```
+

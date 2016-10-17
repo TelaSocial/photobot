@@ -25,15 +25,42 @@ const getPublishers = () => {
 const getPublicPhotos = () => {
     console.log('fetching photos info from datastore');
     const query = gds.createQuery('PhotoMetadata')
-        .filter('acceptedTerms', '=', true);
+        .filter('acceptedTerms', '=', true)
+        .filter('blacklisted', '=', false);
     return new Promise(resolve => {
         gds.runQuery(query, (err, photos) => resolve(photos));
     });
 };
 
+const blacklistPhoto = photoId =>
+    new Promise(resolve => {
+        const key = gds.key(['PhotoMetadata', photoId]);
+        gds.get(key, (err, entity) => {
+            if (err) {
+                return resolve(err);
+            }
+            const newEntity = {
+                ...entity,
+                data: {
+                    ...entity.data,
+                    blacklisted: true
+                }
+            };
+            console.log('newEntity', newEntity);
+            return gds.update(newEntity, (error, response) => {
+                if (error) {
+                    return resolve(error);
+                }
+                return resolve(response);
+            });
+        });
+    }
+);
+
 export {
     gds,
     gcs,
     getPublishers,
-    getPublicPhotos
+    getPublicPhotos,
+    blacklistPhoto
 };

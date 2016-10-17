@@ -1,10 +1,12 @@
-import { getPublicPhotos } from './dataStore';
+import { getPublicPhotos, blacklistPhoto } from './dataStore';
 import express from 'express';
+import bodyParser from 'body-parser';
+
+const PORT = process.env.PORT;
+const updateIntervalTime = 15 * 1000; // 15 seconds
 
 const app = express();
-const PORT = process.env.PORT;
-
-const updateIntervalTime = 15 * 1000; // 15 seconds
+app.use(bodyParser.json());
 
 let publicPhotos = [];
 
@@ -28,6 +30,15 @@ app.get('/photos', (req, res) => {
     res.send(publicPhotos);
 });
 
+app.post('/blacklist', (req, res) => {
+    if (!req.body.photoId) {
+        return res.status(500).send({ error: 'photoId is required' });
+    }
+    const photoId = req.body.photoId.replace('name=', '');
+    console.log('POST', photoId);
+    return blacklistPhoto(photoId).then(response => res.send(response));
+});
+
 console.log('starting…');
 buildPublicPhotosFeed().then(feed => {
     console.log('feed:', feed);
@@ -37,8 +48,8 @@ buildPublicPhotosFeed().then(feed => {
 
 const regenerateFeedLoop = () => {
     setTimeout(() => {
-        buildPublicPhotosFeed().then(feed => {
-            console.log('feed updated', feed);
+        buildPublicPhotosFeed().then(() => {
+            // console.log('feed updated', feed);
             regenerateFeedLoop();
         });
     }, updateIntervalTime);

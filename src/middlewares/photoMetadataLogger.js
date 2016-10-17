@@ -28,6 +28,11 @@ const photoMetadataLogger = (ctx, next) => {
             excludeFromIndexes: false
         },
         {
+            name: 'blacklisted',
+            value: false,
+            excludeFromIndexes: false
+        },
+        {
             name: 'acceptedTerms',
             value: global.activeUsers.has(ctx.state.userId),
             excludeFromIndexes: false
