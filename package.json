@@ -55,6 +55,7 @@
   "homepage": "https://github.com/fczuardi/photobot#readme",
   "dependencies": {
     "download": "^5.0.2",
+    "fast-crc32c": "^1.0.4",
     "google-cloud": "^0.41.2",
     "telegraf": "^3.2.2"
   }
