@@ -1,14 +1,10 @@
-import gcloud from 'google-cloud';
-import path from 'path';
-
-const ds = gcloud.datastore({
-    projectId: process.env.GCLOUD_PROJECT,
-    keyFilename: path.join(__dirname, '../../keyfile.json')
-});
-
 const photoMetadataLogger = (ctx, next) => {
-    const kind = 'PhotoMetadata';
     const fileId = ctx.state.fileId;
+    if (!fileId) {
+        return next();
+    }
+    const ds = ctx.state.gds;
+    const kind = 'PhotoMetadata';
     const key = ds.key([kind, fileId]);
     const data = [
         {

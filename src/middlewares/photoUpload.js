@@ -1,44 +1,44 @@
-import cloud from 'google-cloud';
-import path from 'path';
 import download from 'download';
 import fs from 'fs';
-
-const gcloud = cloud({
-    projectId: process.env.GCLOUD_PROJECT, //eslint-disable-line
-    keyFilename: path.join(__dirname, '../../keyfile.json')
-});
-
-const gcs = gcloud.storage();
+import path from 'path';
 
 const photoUpload = (ctx, next) => {
-    const { telegram } = ctx;
     const fileId = ctx.state.fileId;
-    if (fileId) {
-        return telegram.getFileLink(fileId).then(fileLink => {
-            download(fileLink, '.').then(() => {
-                const bucket = gcs.bucket(process.env.STORAGE_BUCKET);
-                const fileName = fileLink.slice(fileLink.lastIndexOf('/') + 1);
-                const options = {
-                    destination: fileId,
-                    public: global.activeUsers.has(ctx.state.userId)
-
-                };
-                bucket.upload(fileName, options, err => {
-                    if (err) {
-                        console.log('ERROR::::::', err);
-                    }
-                    const photoPath = path.join(__dirname, `../../${fileName}`);
-                    fs.unlink((photoPath, fileName), e => {
-                        if (e) {
-                            console.log('Error when deleting file', e);
-                        }
-                    });
-                });
-            });
-            return next();
-        });
+    if (!fileId) {
+        return next();
     }
-    return next();
+    const { telegram } = ctx;
+    const gcs = ctx.state.gcs;
+    console.log(' -- photo upload --', gcs !== undefined);
+    return telegram.getFileLink(fileId).then(fileLink =>
+        download(fileLink, '.').then(() => {
+            const fileName = fileLink.slice(fileLink.lastIndexOf('/') + 1);
+            const userHasAcceptedTos = global.activeUsers.has(ctx.state.userId);
+            console.log('userHasAcceptedTos', userHasAcceptedTos);
+            const options = {
+                destination: fileId,
+                public: userHasAcceptedTos
+            };
+            console.log('fileName', fileName);
+            console.log('options', options);
+            console.log('process.env.STORAGE_BUCKET', process.env.STORAGE_BUCKET);
+            const bucket = gcs.bucket(process.env.STORAGE_BUCKET);
+            console.log('bucket', bucket !== undefined);
+            return bucket.upload(fileName, options, err => {
+                const photoPath = path.join(__dirname, `../../${fileName}`);
+                fs.unlink((photoPath, fileName), e => {
+                    if (e) {
+                        console.log('Error when deleting file', e);
+                    }
+                });
+                if (err) {
+                    console.log('ERROR::::::', err);
+                    return false;
+                }
+                return next();
+            });
+        })
+    );
 };
 
 export default photoUpload;

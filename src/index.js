@@ -1,6 +1,7 @@
 import Telegraf from 'telegraf';
-import { getPublishers } from './dataStore';
+import { gds, gcs, getPublishers } from './dataStore';
 import debug from './middlewares/debug';
+import addDatastore from './middlewares/addDataStore';
 import messageDataParser from './middlewares/messageDataParser';
 import photoUpload from './middlewares/photoUpload';
 import photoMetadataLogger from './middlewares/photoMetadataLogger';
@@ -13,6 +14,7 @@ const app = new Telegraf(
 
 // Middlewares
 app.use(debug);
+app.use(addDatastore(gds, gcs));
 app.use(messageDataParser);
 app.use(tos);
 app.use(photoUpload);

@@ -4,13 +4,18 @@
   "main": "./src/index.js",
   "license": "MIT",
   "scripts-info": {
+    "start:bot": "Launch the bot daemon in dev mode",
+    "start:api": "Launch the backend API in dev mode",
+    "start": "Run the builded code under dist/npm/src/index.js\n\t(make sure you have a build first with yarn run build:npm)",
     "build:npm": "Builds the transpiled npm package under dist/npm",
     "ppp": "Increases the version patch number, push to github and publish to npm",
     "mpp": "Increases the version minor number, push to github and publish to npm"
   },
   "scripts": {
     "info": "npm-scripts-info",
-    "start": "NODE_DEBUG=dev babel-node ./src/index.js",
+    "start": "npm run build:npm && node dist/npm/src/index.js",
+    "start:bot": "babel-node ./src/index.js",
+    "start:api": "babel-node ./src/api.js",
     "build:npm": "babel --ignore node_modules,dist,tasks --out-dir ./dist/npm .",
     "postbuild:npm": "babel-node ./tasks/npmPostBuild.js",
     "publish:npm": "npm run build:npm && npm publish dist/npm",
@@ -56,6 +61,7 @@
   "dependencies": {
     "download": "^5.0.2",
     "fast-crc32c": "^1.0.4",
+    "file-exists": "^2.0.0",
     "google-cloud": "^0.41.2",
     "telegraf": "^3.2.2"
   }

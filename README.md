@@ -26,8 +26,20 @@ $EDITOR .env
 source .env
 ```
 
-## Run
+## Help 
+```shell
+yarn run info
+```
+
+## Development
 
 ```shell
+yarn start:bot
+```
+
+## Run (production)
+
+```shell
+yarn build:npm
 yarn start
 ```
