@@ -35,6 +35,7 @@ yarn run info
 
 ```shell
 yarn start:dev:bot
+yarn start:dev:api
 ```
 
 ## Production
