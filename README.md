@@ -34,12 +34,12 @@ yarn run info
 ## Development
 
 ```shell
-yarn start:bot
+yarn start:dev:bot
 ```
 
 ## Run (production)
 ```shell
-yarn build:npm
+yarn build
 yarn start
 ```
 
