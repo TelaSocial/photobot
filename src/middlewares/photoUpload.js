@@ -2,6 +2,9 @@ import download from 'download';
 import fs from 'fs';
 import path from 'path';
 
+const urlPrefix = 'https://storage.googleapis.com/';
+const bucketName = process.env.STORAGE_BUCKET;
+
 const photoUpload = (ctx, next) => {
     const fileId = ctx.state.fileId;
     if (!fileId) {
@@ -22,9 +25,9 @@ const photoUpload = (ctx, next) => {
             console.log('fileName', fileName);
             console.log('options', options);
             console.log('process.env.STORAGE_BUCKET', process.env.STORAGE_BUCKET);
-            const bucket = gcs.bucket(process.env.STORAGE_BUCKET);
+            const bucket = gcs.bucket(bucketName);
             console.log('bucket', bucket !== undefined);
-            return bucket.upload(fileName, options, (err, file) => {
+            return bucket.upload(fileName, options, err => {
                 const photoPath = path.join(__dirname, `../../${fileName}`);
                 fs.unlink((photoPath, fileName), e => {
                     if (e) {
@@ -35,8 +38,9 @@ const photoUpload = (ctx, next) => {
                     console.log('ERROR::::::', err);
                     return false;
                 }
-                console.log('file', file.metadata.selfLink);
-                ctx.state.fileUrl = file.metadata.selfLink; //eslint-disable-line
+                const fileUrl = `${urlPrefix}${bucketName}/${fileId}`;
+                console.log('file', fileUrl);
+                ctx.state.fileUrl = fileUrl; //eslint-disable-line
                 return next();
             });
         })
