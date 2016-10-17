@@ -37,13 +37,26 @@ yarn run info
 yarn start:dev:bot
 ```
 
-## Run (production)
+## Production
+
+### Run
 ```shell
 yarn build
 yarn start
 ```
 
-## Stop (production)
+### Monitor
+```shell
+yarn monitor
+```
+
+### Logs
+```shell
+ls *.log
+tail -f THE_FILENAME_YOU_WANT 
+```
+
+### Stop
 ```shell
 yarn stop
 ```

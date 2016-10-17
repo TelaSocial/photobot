@@ -33,6 +33,11 @@ const photoMetadataLogger = (ctx, next) => {
             excludeFromIndexes: false
         },
         {
+            name: 'url',
+            value: ctx.state.fileUrl,
+            excludeFromIndexes: false
+        },
+        {
             name: 'tgUpdate',
             value: JSON.stringify(ctx.update),
             excludeFromIndexes: true

@@ -6,3 +6,5 @@ keyfile.json
 *.jpg
 *.jpeg
 *.png
+*.log
+

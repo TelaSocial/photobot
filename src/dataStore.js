@@ -22,11 +22,10 @@ const getPublishers = () => {
     });
 };
 
-// recebe a lista dos file names cujo userId esta na lista dos publishers
 const getPublicPhotos = () => {
+    console.log('fetching photos info from datastore');
     const query = gds.createQuery('PhotoMetadata')
         .filter('acceptedTerms', '=', true);
-
     return new Promise(resolve => {
         gds.runQuery(query, (err, photos) => resolve(photos));
     });

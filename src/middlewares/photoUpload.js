@@ -24,7 +24,7 @@ const photoUpload = (ctx, next) => {
             console.log('process.env.STORAGE_BUCKET', process.env.STORAGE_BUCKET);
             const bucket = gcs.bucket(process.env.STORAGE_BUCKET);
             console.log('bucket', bucket !== undefined);
-            return bucket.upload(fileName, options, err => {
+            return bucket.upload(fileName, options, (err, file) => {
                 const photoPath = path.join(__dirname, `../../${fileName}`);
                 fs.unlink((photoPath, fileName), e => {
                     if (e) {
@@ -35,6 +35,8 @@ const photoUpload = (ctx, next) => {
                     console.log('ERROR::::::', err);
                     return false;
                 }
+                console.log('file', file.metadata.selfLink);
+                ctx.state.fileUrl = file.metadata.selfLink; //eslint-disable-line
                 return next();
             });
         })
