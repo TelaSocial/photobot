@@ -93,3 +93,9 @@ curl --request POST \
 }'
 ```
 
+## TBD
+
+- feeds for captions
+- ban user
+- API authentication
+
