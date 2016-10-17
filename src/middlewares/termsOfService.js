@@ -1,30 +1,28 @@
 import setup from '../../setup';
 const tos = (ctx, next) => {
-    const fileId = ctx.state.fileId;
-    const { text, from } = ctx.update.message;
+    const { text, userId, displayName, fileId, chatType } = ctx.state;
     const ds = ctx.state.gds;
-    const isStart = text && text === '/start';
+    const isStart = text && text.indexOf('/start') !== -1;
     const isTosReply = text && (text === setup.agreeText || text === setup.declineText);
-    const hasAccepted = id => global.activeUsers.has(id);
 
-    if (isStart && !hasAccepted(from.id)) {
+    if (isStart) {
+        console.log('--- -- start -- -- ---');
         ctx.reply(setup.askForConfirmation, { reply_markup: {
             resize_keyboard: true,
             one_time_keyboard: true,
             keyboard: [
                 [{ text: setup.agreeText }, { text: setup.declineText }]]
         } });
-    } else if (isTosReply && !hasAccepted(from.id)) {
-        if (text === setup.agreeText) {
-            global.activeUsers.add(from.id);
-        } else if (text === setup.declineText) {
-            global.activeUsers.delete(from.id);
+        return next();
+    }
+    if (isTosReply) {
+        const hasAccepted = (text === setup.agreeText);
+        if (hasAccepted) {
+            global.activeUsers.add(userId);
         } else {
-            return next();
+            global.activeUsers.delete(userId);
         }
-
         const kind = 'TosAcceptance';
-        const userId = `${from.id}`;
         const key = ds.key([kind, userId]);
         const data = [
             {
@@ -34,31 +32,27 @@ const tos = (ctx, next) => {
             },
             {
                 name: 'userId',
-                value: from.id,
+                value: userId,
                 excludeFromIndexes: false
             },
             {
                 name: 'answer',
-                value: hasAccepted(from.id),
+                value: hasAccepted,
                 excludeFromIndexes: false
             }
         ];
         const entity = { key, data };
-        console.log('entity ', entity);
-
         return ds.save(entity, err => {
-            if (err) { console.log('ERROR:::::', err); }
-            if (hasAccepted(from.id)) {
-                ctx.reply(setup.notifyAgreed);
-            } else {
-                ctx.reply(setup.notifyDeclined);
+            if (err) {
+                console.log('ERROR:::::', err);
             }
+            ctx.reply(hasAccepted ? setup.notifyAgreed : setup.notifyDeclined);
             return next();
         });
-    } else if (fileId && !hasAccepted(from.id)) {
-        const isPrivate = ctx.update.message.chat.type === 'private';
-        if (isPrivate) {
-            return ctx.reply(setup.askForConfirmation, {
+    }
+    if (fileId && !global.activeUsers.has(userId)) {
+        if (chatType === 'private') {
+            ctx.reply(setup.askForConfirmation, {
                 reply_markup: {
                     resize_keyboard: true,
                     one_time_keyboard: true,
@@ -67,8 +61,10 @@ const tos = (ctx, next) => {
                     ]
                 }
             });
+        } else {
+            ctx.reply(setup.greeting(displayName, process.env.BOT_USERNAME));
         }
-        ctx.reply(setup.greeting(from.first_name, process.env.BOT_USERNAME));
+        return next();
     }
     return next();
 };

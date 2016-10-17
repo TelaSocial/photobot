@@ -16,7 +16,7 @@ const messageDataParser = (ctx, next) => {
     if (!message) {
         return false;
     }
-    const { document, photo, date } = message;
+    const { text, document, photo, date, chat } = message;
     const docId = document ? document.file_id : null;
     const photoId = Array.isArray(photo)
         ? photo[photo.length - 1].file_id
@@ -33,8 +33,10 @@ const messageDataParser = (ctx, next) => {
         .join(' ') || username;
     ctx.state.fileId = fileId; // eslint-disable-line
     ctx.state.displayName = displayName; // eslint-disable-line
-    ctx.state.userId = id; // eslint-disable-line
+    ctx.state.userId = `${id}`; // eslint-disable-line
     ctx.state.timestamp = date; // eslint-disable-line
+    ctx.state.text = text; // eslint-disable-line
+    ctx.state.chatType = chat.type; // eslint-disable-line
     return next();
 };
 
