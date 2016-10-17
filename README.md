@@ -38,8 +38,12 @@ yarn start:bot
 ```
 
 ## Run (production)
-
 ```shell
 yarn build:npm
 yarn start
+```
+
+## Stop (production)
+```shell
+yarn stop
 ```
