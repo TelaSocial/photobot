@@ -8,7 +8,11 @@ const config = {
         storageBucket: 'STORAGE_BUCKET'
     },
     api: {
-        port: 'PORT'
+        port: 'PORT',
+        fetchInterval: 15, // frequency in seconds of main photo feed query
+        adminTokens: [
+            'ADMIN_ACCESS_TOKEN'
+        ]
     }
 };
 

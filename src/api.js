@@ -4,7 +4,8 @@ import bodyParser from 'body-parser';
 import config from '../config';
 
 const PORT = config.api.port;
-const updateIntervalTime = 15 * 1000; // 15 seconds
+const updateIntervalTime = config.api.fetchInterval * 1000; // 15 seconds
+const allowedAdmins = config.api.adminTokens;
 
 const app = express();
 app.use(bodyParser.json());
@@ -41,6 +42,13 @@ app.get('/photos/tag/:tagName', (req, res) => {
 app.post('/blacklist', (req, res) => {
     if (!req.body.photoId) {
         return res.status(500).send({ error: 'photoId is required' });
+    }
+    if (!req.headers.authentication) {
+        return res.status(403).send({ error: 'missing authentication header' });
+    }
+    const isAdmin = allowedAdmins.includes(req.headers.authentication);
+    if (!isAdmin) {
+        return res.status(403).send({ error: 'invalid authentication token' });
     }
     const photoId = req.body.photoId.replace('name=', '');
     console.log('POST', photoId);

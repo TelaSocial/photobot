@@ -88,6 +88,8 @@ curl --request GET \
 
 Blacklists an individual photo and remove it from the public feeds.
 
+***headers:*** Authentication
+
 ***body parameter:*** photoId
 
 ***example:***
@@ -95,14 +97,14 @@ Blacklists an individual photo and remove it from the public feeds.
 ```
 curl --request POST \
   --url http://localhost:7314/blacklist \
+  --header 'authentication: 98765498765498765' \
   --header 'content-type: application/json' \
   --data '{
 	"photoId": "AgADAQADn6gxG3tmKgHscgQ3VBrHqcWs5y8ABKjihbunkqIUGcQBAAEC" 
-}'
+}
 ```
 
 ## TBD
 
 - ban user
-- API authentication
 
