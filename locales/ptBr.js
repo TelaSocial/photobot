@@ -1,5 +1,4 @@
 export default {
-    tag: 'my_tag',
     askForConfirmation: 'Do you agree with our terms?',
     agreeText: 'Yes, I do',
     declineText: 'No, I don\'t',
@@ -7,3 +6,4 @@ export default {
     notifyDeclined: 'Maybe next time',
     greeting: (userName, botName) => `Welcome ${userName}. Please talk to @${botName} to have your photos posted on the screen` //eslint-disable-line
 };
+

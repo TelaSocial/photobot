@@ -1,22 +1,51 @@
-import setup from '../../setup';
+import messages from '../../locales/ptBr.js';
 const tos = (ctx, next) => {
     const { text, userId, displayName, fileId, chatType } = ctx.state;
     const ds = ctx.state.gds;
-    const isStart = text && text.indexOf('/start') !== -1;
-    const isTosReply = text && (text === setup.agreeText || text === setup.declineText);
 
-    if (isStart) {
-        console.log('--- -- start -- -- ---');
-        ctx.reply(setup.askForConfirmation, { reply_markup: {
-            resize_keyboard: true,
-            one_time_keyboard: true,
-            keyboard: [
-                [{ text: setup.agreeText }, { text: setup.declineText }]]
-        } });
+    if (fileId && !global.activeUsers.has(userId)) {
+        if (chatType === 'private') {
+            ctx.reply(messages.askForConfirmation, {
+                reply_markup: {
+                    resize_keyboard: true,
+                    one_time_keyboard: true,
+                    keyboard: [[
+                        { text: messages.agreeText },
+                        { text: messages.declineText }
+                    ]]
+                }
+            });
+        } else {
+            ctx.reply(messages.greeting(displayName,
+                            process.env.BOT_USERNAME));
+        }
         return next();
     }
+
+    if (!text) {
+        return next();
+    }
+
+    const isStart = text.indexOf('/start') !== -1;
+    const isTosReply = (text === messages.agreeText ||
+                            text === messages.declineText);
+    if (isStart) {
+        console.log('--- -- start -- -- ---');
+        ctx.reply(messages.askForConfirmation, {
+            reply_markup: {
+                resize_keyboard: true,
+                one_time_keyboard: true,
+                keyboard: [[
+                    { text: messages.agreeText },
+                    { text: messages.declineText }
+                ]]
+            }
+        });
+        return next();
+    }
+
     if (isTosReply) {
-        const hasAccepted = (text === setup.agreeText);
+        const hasAccepted = (text === messages.agreeText);
         if (hasAccepted) {
             global.activeUsers.add(userId);
         } else {
@@ -46,25 +75,12 @@ const tos = (ctx, next) => {
             if (err) {
                 console.log('ERROR:::::', err);
             }
-            ctx.reply(hasAccepted ? setup.notifyAgreed : setup.notifyDeclined);
+            ctx.reply(hasAccepted
+                    ? messages.notifyAgreed
+                    : messages.notifyDeclined
+            );
             return next();
         });
-    }
-    if (fileId && !global.activeUsers.has(userId)) {
-        if (chatType === 'private') {
-            ctx.reply(setup.askForConfirmation, {
-                reply_markup: {
-                    resize_keyboard: true,
-                    one_time_keyboard: true,
-                    keyboard: [
-                        [{ text: setup.agreeText }, { text: setup.declineText }]
-                    ]
-                }
-            });
-        } else {
-            ctx.reply(setup.greeting(displayName, process.env.BOT_USERNAME));
-        }
-        return next();
     }
     return next();
 };
