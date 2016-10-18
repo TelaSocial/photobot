@@ -2,10 +2,10 @@ node_modules
 .env
 config.js
 dist
+logs
 npm-*
 keyfile.json
 *.jpg
 *.jpeg
 *.png
-*.log
 

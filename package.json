@@ -17,8 +17,8 @@
   "scripts": {
     "info": "npm-scripts-info",
     "start": "yarn start:api & yarn start:bot",
-    "start:api": "pm2 start --name api --log api.log dist/npm/src/api.js",
-    "start:bot": "pm2 start --name bot --log bot.log dist/npm/src/bot.js",
+    "start:api": "pm2 start --name api --log ./logs/api.log dist/npm/src/api.js",
+    "start:bot": "pm2 start --name bot --log ./logs/bot.log dist/npm/src/bot.js",
     "monitor": "pm2 monit",
     "stop": "pm2 delete all",
     "start:dev:bot": "babel-node ./src/bot.js",
