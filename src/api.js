@@ -15,6 +15,7 @@ const buildPublicPhotosFeed = () => new Promise(resolve =>
     getPublicPhotos().then(photos => {
         const feed = photos.map(photo => ({
             author: photo.data.displayName,
+            caption: photo.data.caption,
             date: photo.data.timestamp,
             url: photo.data.url
         }));
@@ -29,6 +30,12 @@ const buildPublicPhotosFeed = () => new Promise(resolve =>
 
 app.get('/photos', (req, res) => {
     res.send(publicPhotos);
+});
+
+app.get('/photos/tag/:tagName', (req, res) => {
+    const photosWithTag = publicPhotos.filter(photo =>
+        photo.caption.indexOf(req.params.tagName) !== -1);
+    res.send(photosWithTag);
 });
 
 app.post('/blacklist', (req, res) => {

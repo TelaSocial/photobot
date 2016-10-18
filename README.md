@@ -75,13 +75,22 @@ curl --request GET \
   --url http://localhost:7314/photos
 ```
 
+#### GET /photos/:tagName
+
+Gets the feed of public photos that has a tagname in it's caption
+
+```
+curl --request GET \
+  --url http://localhost:7314/photos/tag/latino
+```
+
 #### POST /blacklist
 
 Blacklists an individual photo and remove it from the public feeds.
 
-** body parameter: photoID**
+***body parameter:*** photoId
 
-**example **
+***example:***
 
 ```
 curl --request POST \
@@ -94,7 +103,6 @@ curl --request POST \
 
 ## TBD
 
-- feeds for captions
 - ban user
 - API authentication
 
