@@ -6,11 +6,10 @@ import messageDataParser from './middlewares/messageDataParser';
 import photoUpload from './middlewares/photoUpload';
 import photoMetadataLogger from './middlewares/photoMetadataLogger';
 import tos from './middlewares/termsOfService';
+import config from '../config';
 
-const app = new Telegraf(
-    process.env.BOT_TOKEN,
-    { username: process.env.BOT_NAME }
-);
+const app = new Telegraf(config.tg.botToken,
+            { username: config.tg.botUsername });
 
 // Middlewares
 app.use(debug);

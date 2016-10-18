@@ -1,8 +1,9 @@
 import { getPublicPhotos, blacklistPhoto } from './dataStore';
 import express from 'express';
 import bodyParser from 'body-parser';
+import config from '../config';
 
-const PORT = process.env.PORT;
+const PORT = config.api.port;
 const updateIntervalTime = 15 * 1000; // 15 seconds
 
 const app = express();

@@ -1,12 +1,13 @@
 import gcloud from 'google-cloud';
 import path from 'path';
 import fileExists from 'file-exists';
+import config from '../config';
 
 const keyDevPath = path.join(__dirname, '../keyfile.json');
 const keyDistPath = path.join(__dirname, '../../../keyfile.json');
 const keyFilename = fileExists(keyDevPath) ? keyDevPath : keyDistPath;
 const cloud = gcloud({
-    projectId: process.env.GCLOUD_PROJECT,
+    projectId: config.gcloud.projectId,
     keyFilename
 });
 const gds = cloud.datastore();

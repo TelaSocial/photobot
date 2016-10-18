@@ -1,4 +1,6 @@
 import messages from '../../locales/ptBr.js';
+import config from '../../config';
+
 const tos = (ctx, next) => {
     const { text, userId, displayName, fileId, chatType } = ctx.state;
     const ds = ctx.state.gds;
@@ -16,8 +18,9 @@ const tos = (ctx, next) => {
                 }
             });
         } else {
-            ctx.reply(messages.greeting(displayName,
-                            process.env.BOT_USERNAME));
+            ctx.reply(
+                messages.greeting(displayName, config.tg.botUsername)
+            );
         }
         return next();
     }

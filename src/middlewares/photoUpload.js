@@ -1,9 +1,10 @@
 import download from 'download';
 import fs from 'fs';
 import path from 'path';
+import config from '../../config';
 
 const urlPrefix = 'https://storage.googleapis.com/';
-const bucketName = process.env.STORAGE_BUCKET;
+const bucketName = config.gcloud.storageBucket;
 
 const photoUpload = (ctx, next) => {
     const fileId = ctx.state.fileId;
@@ -24,7 +25,6 @@ const photoUpload = (ctx, next) => {
             };
             console.log('fileName', fileName);
             console.log('options', options);
-            console.log('process.env.STORAGE_BUCKET', process.env.STORAGE_BUCKET);
             const bucket = gcs.bucket(bucketName);
             console.log('bucket', bucket !== undefined);
             return bucket.upload(fileName, options, err => {

@@ -21,9 +21,8 @@ yarn install
 
 ## Config
 ```shell
-cp .env-sample .env
-$EDITOR .env
-source .env
+cp config-sample.js config.js
+$EDITOR config.js
 ```
 
 ## Help 
