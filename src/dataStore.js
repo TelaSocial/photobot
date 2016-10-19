@@ -60,6 +60,50 @@ const getPhotosWithTag = tagName => {
     });
 };
 
+const getPhotosInAlbum = albumName => {
+    const query = gds.createQuery(photoKind)
+        .filter('album', '=', albumName)
+        .order('timestamp', { descending: true });
+    return new Promise(resolve => {
+        gds.runQuery(query, (err, photos) => {
+            if (err) {
+                console.error('get album photos query error:', err);
+                return resolve([]);
+            }
+            return resolve(photos);
+        });
+    });
+};
+
+const addPhotoToAlbum = (photoId, albumName) =>
+    new Promise(resolve => {
+        const key = gds.key([photoKind, photoId]);
+        gds.get(key, (err, entity) => {
+            if (err) {
+                return resolve(err);
+            }
+            const entityAlbums = entity.data.album || [];
+            const newEntityAlbums = entity.data.album.includes(albumName)
+                ? entityAlbums
+                : entityAlbums.concat([albumName]);
+            const newEntity = {
+                ...entity,
+                data: {
+                    ...entity.data,
+                    album: newEntityAlbums
+                }
+            };
+            console.log('newEntity', newEntity);
+            return gds.update(newEntity, (error, response) => {
+                if (error) {
+                    return resolve(error);
+                }
+                return resolve(response);
+            });
+        });
+    }
+);
+
 const getPhotosWithWord = word => {
     const query = gds.createQuery(photoKind)
         .filter('acceptedTerms', '=', true)
@@ -109,5 +153,7 @@ export {
     getPublicPhotos,
     getPhotosWithTag,
     getPhotosWithWord,
+    getPhotosInAlbum,
+    addPhotoToAlbum,
     blacklistPhoto
 };

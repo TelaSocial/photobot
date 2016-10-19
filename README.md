@@ -100,6 +100,15 @@ curl --request GET \
   --url http://localhost:7314/photos/word/telasocial
 ```
 
+#### GET /photos/album/:album
+
+Gets the feed of public photos that contains a word in it's caption
+
+```
+curl --request GET \
+  --url http://localhost:7314/photos/album/destaques
+```
+
 #### POST /blacklist
 
 Blacklists an individual photo and remove it from the public feeds.
@@ -118,6 +127,26 @@ curl --request POST \
   --data '{
 	"photoId": "AgADAQADn6gxG3tmKgHscgQ3VBrHqcWs5y8ABKjihbunkqIUGcQBAAEC" 
 }
+```
+
+#### POST /photos/album/:album
+
+Add a photo to an album
+
+***headers:*** Authentication
+
+***body parameter:*** photoId
+
+***example:***
+
+```
+curl --request POST \
+  --url http://localhost:7314/photos/album/showcase \
+  --header 'authentication: 98765498765498765' \
+  --header 'content-type: application/json' \
+  --data '{
+	"photoId": "AgADAQADoKgxG3tmKgHaenVjPegTTQn25y8ABPtXeuwz8Dgd6zIBAAEC" 
+}'
 ```
 
 ## TBD

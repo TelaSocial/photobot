@@ -3,6 +3,13 @@ indexes:
 - kind: PhotoMetadata
   ancestor: no
   properties:
+  - name: album
+  - name: timestamp
+    direction: desc
+
+- kind: PhotoMetadata
+  ancestor: no
+  properties:
   - name: acceptedTerms
   - name: blacklisted
   - name: timestamp
