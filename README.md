@@ -11,7 +11,12 @@ on Google Cloud.
   - https://cloud.google.com/sdk/docs/quickstarts
 - a Google Cloud app credentials json file
   - https://console.cloud.google.com/home/dashboard
-  - **Create project** ![screen shot 2016-10-16 at 17 54 31](https://cloud.githubusercontent.com/assets/7760/19420426/cc86caec-93c9-11e6-88ab-f55f7be794c9.png)
+  - **Create project**
+    - ![screen shot 2016-10-16 at 17 54 31](https://cloud.githubusercontent.com/assets/7760/19420426/cc86caec-93c9-11e6-88ab-f55f7be794c9.png)
+  - **Create credential**
+    - ![screen shot 2016-10-19 at 09 04 45](https://cloud.githubusercontent.com/assets/7760/19516545/3ad90a92-95db-11e6-90a8-124cb4063fc0.png)
+    - ![screen shot 2016-10-19 at 09 05 02](https://cloud.githubusercontent.com/assets/7760/19516549/404549d2-95db-11e6-83c1-8a35c650d2d3.png)
+ - download the .json file and copy to the root of photobot project as ```keyfile.json```
 
 ## Install
 
