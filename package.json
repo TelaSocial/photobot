@@ -29,7 +29,7 @@
     "build:npm": "babel --ignore node_modules,dist,tasks --out-dir ./dist/npm .",
     "prebuild:npm": "babel-node ./tasks/npmPreBuild.js",
     "publish:npm": "npm publish ./dist/npm",
-    "prepublish:npm": "babel-node ./tasks/npmPrePublish.js && yarn:run build:npm",
+    "prepublish:npm": "npm run build:npm && babel-node ./tasks/npmPrePublish.js",
     "ppp": "npm version patch && git push && git push --tags && npm run publish:npm",
     "mpp": "npm version minor && git push && git push --tags && npm run publish:npm"
   },
