@@ -157,6 +157,6 @@ curl --request POST \
 
 ## TBD
 
-- remove photo from album
-- ban user
+- [api] remove photo from album
+- [bot] switch to webhooks
 
