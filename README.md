@@ -82,13 +82,22 @@ curl --request GET \
   --url http://localhost:7314/photos
 ```
 
-#### GET /photos/:tagName
+#### GET /photos/tag/:tagName
 
-Gets the feed of public photos that has a tagname in it's caption
+Gets the feed of public photos that has a hashtag in it's caption
 
 ```
 curl --request GET \
   --url http://localhost:7314/photos/tag/latino
+```
+
+#### GET /photos/word/:word
+
+Gets the feed of public photos that contains a word in it's caption
+
+```
+curl --request GET \
+  --url http://localhost:7314/photos/word/telasocial
 ```
 
 #### POST /blacklist

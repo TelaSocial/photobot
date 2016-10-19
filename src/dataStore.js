@@ -3,9 +3,12 @@ import path from 'path';
 import fileExists from 'file-exists';
 import config from '../config';
 
+const photoKind = 'PhotoMetadata';
+
 const keyDevPath = path.join(__dirname, '../keyfile.json');
 const keyDistPath = path.join(__dirname, '../../../keyfile.json');
 const keyFilename = fileExists(keyDevPath) ? keyDevPath : keyDistPath;
+console.log('config.gcloud.projectId', config.gcloud.projectId);
 const cloud = gcloud({
     projectId: config.gcloud.projectId,
     keyFilename
@@ -25,17 +28,58 @@ const getPublishers = () => {
 
 const getPublicPhotos = () => {
     console.log('fetching photos info from datastore');
-    const query = gds.createQuery('PhotoMetadata')
+    const query = gds.createQuery(photoKind)
         .filter('acceptedTerms', '=', true)
-        .filter('blacklisted', '=', false);
+        .filter('blacklisted', '=', false)
+        .order('timestamp', { descending: true });
     return new Promise(resolve => {
-        gds.runQuery(query, (err, photos) => resolve(photos));
+        gds.runQuery(query, (err, photos) => {
+            if (err) {
+                console.error('get public photos query error:', err);
+                return resolve([]);
+            }
+            return resolve(photos);
+        });
+    });
+};
+
+const getPhotosWithTag = tagName => {
+    const query = gds.createQuery(photoKind)
+        .filter('acceptedTerms', '=', true)
+        .filter('blacklisted', '=', false)
+        .filter('tag', '=', tagName)
+        .order('timestamp', { descending: true });
+    return new Promise(resolve => {
+        gds.runQuery(query, (err, photos) => {
+            if (err) {
+                console.error('get photos with tag query error:', err);
+                return resolve([]);
+            }
+            return resolve(photos);
+        });
+    });
+};
+
+const getPhotosWithWord = word => {
+    const query = gds.createQuery(photoKind)
+        .filter('acceptedTerms', '=', true)
+        .filter('blacklisted', '=', false)
+        .filter('word', '=', word)
+        .order('timestamp', { descending: true });
+    return new Promise(resolve => {
+        gds.runQuery(query, (err, photos) => {
+            if (err) {
+                console.error('get photos with word query error:', err);
+                return resolve([]);
+            }
+            return resolve(photos);
+        });
     });
 };
 
 const blacklistPhoto = photoId =>
     new Promise(resolve => {
-        const key = gds.key(['PhotoMetadata', photoId]);
+        const key = gds.key([photoKind, photoId]);
         gds.get(key, (err, entity) => {
             if (err) {
                 return resolve(err);
@@ -63,5 +107,7 @@ export {
     gcs,
     getPublishers,
     getPublicPhotos,
+    getPhotosWithTag,
+    getPhotosWithWord,
     blacklistPhoto
 };

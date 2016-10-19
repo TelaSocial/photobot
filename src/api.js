@@ -1,42 +1,43 @@
-import { getPublicPhotos, blacklistPhoto } from './dataStore';
+import {
+    getPublicPhotos,
+    getPhotosWithTag,
+    getPhotosWithWord,
+    blacklistPhoto
+} from './dataStore';
 import express from 'express';
 import bodyParser from 'body-parser';
 import config from '../config';
 
 const PORT = config.api.port;
-const updateIntervalTime = config.api.fetchInterval * 1000; // 15 seconds
 const allowedAdmins = config.api.adminTokens;
 
 const app = express();
 app.use(bodyParser.json());
 
-let publicPhotos = [];
-
-const buildPublicPhotosFeed = () => new Promise(resolve =>
-    getPublicPhotos().then(photos => {
-        const feed = photos.map(photo => ({
-            author: photo.data.displayName,
-            caption: photo.data.caption,
-            date: photo.data.timestamp,
-            url: photo.data.url
-        }));
-        if (Array.isArray(feed)) {
-            publicPhotos = feed;
-        }
-        resolve(feed);
-    }).catch(e =>
-        console.error('getPublicPhotos error', e)
-    )
-);
+const buildFeed = photos =>
+    photos.map(photo => ({
+        author: photo.data.displayName,
+        caption: photo.data.caption,
+        date: photo.data.timestamp,
+        url: photo.data.url
+    }));
 
 app.get('/photos', (req, res) => {
-    res.send(publicPhotos);
+    getPublicPhotos().then(photos =>
+        res.send(buildFeed(photos))
+    );
 });
 
 app.get('/photos/tag/:tagName', (req, res) => {
-    const photosWithTag = publicPhotos.filter(photo =>
-        photo.caption.indexOf(req.params.tagName) !== -1);
-    res.send(photosWithTag);
+    getPhotosWithTag(`#${req.params.tagName}`).then(photos =>
+        res.send(buildFeed(photos))
+    );
+});
+
+app.get('/photos/word/:word', (req, res) => {
+    getPhotosWithWord(`${req.params.word}`).then(photos =>
+        res.send(buildFeed(photos))
+    );
 });
 
 app.post('/blacklist', (req, res) => {
@@ -55,22 +56,5 @@ app.post('/blacklist', (req, res) => {
     return blacklistPhoto(photoId).then(response => res.send(response));
 });
 
-console.log('starting…');
-buildPublicPhotosFeed().then(feed => {
-    console.log('feed:', feed);
-    console.log(`\nPhoto feed built. Serving Photo feed API on port ${PORT}`);
-    app.listen(PORT);
-});
-
-const regenerateFeedLoop = () => {
-    setTimeout(() => {
-        buildPublicPhotosFeed().then(() => {
-            // console.log('feed updated', feed);
-            regenerateFeedLoop();
-        });
-    }, updateIntervalTime);
-};
-
-// regenerate feed every x miliseconds
-regenerateFeedLoop();
+app.listen(PORT);
 

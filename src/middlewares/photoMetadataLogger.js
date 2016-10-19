@@ -1,3 +1,6 @@
+const extractTags = new RegExp('#\\w+', 'ig');
+const extractWords = new RegExp('\\w+', 'ig');
+
 const photoMetadataLogger = (ctx, next) => {
     const fileId = ctx.state.fileId;
     if (!fileId) {
@@ -6,6 +9,7 @@ const photoMetadataLogger = (ctx, next) => {
     const ds = ctx.state.gds;
     const kind = 'PhotoMetadata';
     const key = ds.key([kind, fileId]);
+    const caption = ctx.update.message.caption || '';
     const data = [
         {
             name: 'timestamp',
@@ -18,13 +22,13 @@ const photoMetadataLogger = (ctx, next) => {
             excludeFromIndexes: false
         },
         {
-            name: 'displayName',
-            value: ctx.state.displayName,
-            excludeFromIndexes: true
+            name: 'tag',
+            value: caption.match(extractTags),
+            excludeFromIndexes: false
         },
         {
-            name: 'caption',
-            value: ctx.update.message.caption || '',
+            name: 'word',
+            value: caption.match(extractWords),
             excludeFromIndexes: false
         },
         {
@@ -38,9 +42,19 @@ const photoMetadataLogger = (ctx, next) => {
             excludeFromIndexes: false
         },
         {
+            name: 'displayName',
+            value: ctx.state.displayName,
+            excludeFromIndexes: true
+        },
+        {
+            name: 'caption',
+            value: caption,
+            excludeFromIndexes: true
+        },
+        {
             name: 'url',
             value: ctx.state.fileUrl,
-            excludeFromIndexes: false
+            excludeFromIndexes: true
         },
         {
             name: 'tgUpdate',
