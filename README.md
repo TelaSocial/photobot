@@ -7,6 +7,7 @@ on Google Cloud.
 - node > v6
 - yarn
   - https://yarnpkg.com/en/docs/install
+- gcloud sdk
 - a Google Cloud app credentials json file
   - https://console.cloud.google.com/home/dashboard
   - **Create project** ![screen shot 2016-10-16 at 17 54 31](https://cloud.githubusercontent.com/assets/7760/19420426/cc86caec-93c9-11e6-88ab-f55f7be794c9.png)
@@ -23,6 +24,12 @@ yarn install
 ```shell
 cp config-sample.js config.js
 $EDITOR config.js
+```
+
+With gcloud sdk configured to your gcloud app, you will have to create the indexes with:
+
+```shell
+yarn build:index
 ```
 
 ## Help 

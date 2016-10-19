@@ -4,6 +4,7 @@
   "main": "./src/bot.js",
   "license": "MIT",
   "scripts-info": {
+    "build:index": "Configure Google Cloud Datastore composite indexes",
     "start:dev:bot": "Launch the bot daemon in dev mode",
     "start:dev:api": "Launch the backend API in dev mode",
     "build": "Builds the transpiled npm package under dist/npm",
@@ -16,6 +17,7 @@
   },
   "scripts": {
     "info": "npm-scripts-info",
+    "build:index": "gcloud preview datastore create-indexes index.yaml",
     "start": "yarn start:api & yarn start:bot",
     "start:api": "pm2 start --name api --log ./logs/api.log dist/npm/src/api.js",
     "start:bot": "pm2 start --name bot --log ./logs/bot.log dist/npm/src/bot.js",

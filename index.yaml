@@ -1,0 +1,28 @@
+indexes:
+
+- kind: PhotoMetadata
+  ancestor: no
+  properties:
+  - name: acceptedTerms
+  - name: blacklisted
+  - name: timestamp
+    direction: desc
+
+- kind: PhotoMetadata
+  ancestor: no
+  properties:
+  - name: acceptedTerms
+  - name: blacklisted
+  - name: tag
+  - name: timestamp
+    direction: desc
+
+- kind: PhotoMetadata
+  ancestor: no
+  properties:
+  - name: acceptedTerms
+  - name: blacklisted
+  - name: word
+  - name: timestamp
+    direction: desc
+
