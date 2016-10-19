@@ -60,7 +60,7 @@ yarn monitor
 
 ### Logs
 ```shell
-ls *.log
+ls logs
 tail -f THE_FILENAME_YOU_WANT 
 ```
 
@@ -152,5 +152,6 @@ curl --request POST \
 
 ## TBD
 
+- remove photo from album
 - ban user
 
